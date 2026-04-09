@@ -1,0 +1,7 @@
+name: nextjs
+description: Next.js 14/15 App Router patterns, server components, and API routes
+detect:
+  files: ["next.config.*"]
+  deps: ["next"]
+  dirs: ["src/app/"]
+roles: [engineer, designer]
