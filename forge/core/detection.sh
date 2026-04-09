@@ -12,7 +12,9 @@ DETECTED=()
 
 # nextjs
 if ls "$REPO_DIR"/next.config.* 1>/dev/null 2>&1 || \
-   [ -d "$REPO_DIR/src/app" ]; then
+   ( [ -d "$REPO_DIR/src/app" ] && \
+     [ -f "$REPO_DIR/package.json" ] && \
+     grep -q '"next"' "$REPO_DIR/package.json" 2>/dev/null ); then
   DETECTED+=("nextjs")
 fi
 
@@ -64,7 +66,7 @@ if [ -f "$FORGE_DIR/forge.yaml" ]; then
   # Add extra_packs — extract list items under the extra_packs: key
   if grep -q '^extra_packs:' "$FORGE_DIR/forge.yaml" 2>/dev/null; then
     while IFS= read -r line; do
-      pack=$(echo "$line" | sed 's/^[[:space:]]*-[[:space:]]*//' | tr -d '[:space:]')
+      pack=$(echo "$line" | sed 's/^[[:space:]]*-[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '[:space:]')
       if [ -n "$pack" ] && [[ ! " ${DETECTED[*]:-} " =~ " $pack " ]]; then
         DETECTED+=("$pack")
       fi
@@ -85,7 +87,7 @@ if [ -f "$FORGE_DIR/forge.yaml" ]; then
         FILTERED+=("$pack")
       fi
     done
-    DETECTED=("${FILTERED[@]}")
+    DETECTED=(${FILTERED[@]+"${FILTERED[@]}"})
   fi
 fi
 
