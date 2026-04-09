@@ -1,0 +1,6 @@
+name: typescript
+description: TypeScript development patterns, type safety, and configuration
+detect:
+  files: ["tsconfig.json"]
+  deps: ["typescript"]
+roles: [engineer]
