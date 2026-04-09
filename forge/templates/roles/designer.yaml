@@ -1,0 +1,17 @@
+role: designer
+description: Design and accessibility gates — no dev-cycle or code gates
+gates:
+  three_file_rule: false
+  skill_check: true
+  knowledge_gate: true
+  dev_cycle: false
+  pre_dev_planning: false
+  code_review: false
+  build_verification: false
+  test_gate: false
+  auto_triggers: false
+  doubt_triggered_questions: false
+  brainstorming: true
+  visual_companion: true
+  design_system: true
+  accessibility_gates: true

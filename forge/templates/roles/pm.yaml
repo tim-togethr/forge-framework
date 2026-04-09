@@ -1,0 +1,17 @@
+role: pm
+description: Planning and knowledge gates — no build, test, or code-review gates
+gates:
+  three_file_rule: false
+  skill_check: true
+  knowledge_gate: true
+  dev_cycle: false
+  pre_dev_planning: true
+  code_review: false
+  build_verification: false
+  test_gate: false
+  auto_triggers: false
+  doubt_triggered_questions: true
+  brainstorming: true
+  visual_companion: false
+  design_system: false
+  accessibility_gates: false

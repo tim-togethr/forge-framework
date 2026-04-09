@@ -1,0 +1,17 @@
+role: engineer
+description: Full development gates — all disciplines enforced
+gates:
+  three_file_rule: true
+  skill_check: true
+  knowledge_gate: true
+  dev_cycle: true
+  pre_dev_planning: true
+  code_review: true
+  build_verification: true
+  test_gate: true
+  auto_triggers: true
+  doubt_triggered_questions: true
+  brainstorming: true
+  visual_companion: true
+  design_system: false
+  accessibility_gates: false

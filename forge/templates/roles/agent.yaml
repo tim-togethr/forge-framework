@@ -1,0 +1,17 @@
+role: agent
+description: Critical path only — minimal gates for automated or scripted sessions
+gates:
+  three_file_rule: true
+  skill_check: false
+  knowledge_gate: true
+  dev_cycle: false
+  pre_dev_planning: false
+  code_review: false
+  build_verification: true
+  test_gate: true
+  auto_triggers: true
+  doubt_triggered_questions: false
+  brainstorming: false
+  visual_companion: false
+  design_system: false
+  accessibility_gates: false
