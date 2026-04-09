@@ -1,0 +1,27 @@
+{
+  "name": "forge",
+  "displayName": "Forge",
+  "description": "Unified skills & agent framework for Claude Code. Progressive disclosure, shared team knowledge, auto-detected domain packs, self-improvement loop.",
+  "version": "0.1.0",
+  "author": {
+    "name": "tim-togethr"
+  },
+  "repository": "https://github.com/tim-togethr/forge-framework",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "agents",
+    "orchestrator",
+    "progressive-disclosure",
+    "team-knowledge",
+    "auto-detection",
+    "self-eval"
+  ],
+  "skills": "./packs/",
+  "agents": [
+    "./agents/explorer.md",
+    "./agents/planner.md",
+    "./agents/reviewer.md"
+  ],
+  "commands": "./commands/"
+}
