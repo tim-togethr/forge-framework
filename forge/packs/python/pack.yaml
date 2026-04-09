@@ -1,0 +1,5 @@
+name: python
+description: Python idioms, type hints, testing, and project structure
+detect:
+  files: ["pyproject.toml", "requirements.txt", "setup.py"]
+roles: [engineer]

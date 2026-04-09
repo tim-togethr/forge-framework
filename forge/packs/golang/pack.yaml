@@ -1,0 +1,5 @@
+name: golang
+description: Go idioms, error handling, concurrency, and testing patterns
+detect:
+  files: ["go.mod"]
+roles: [engineer]

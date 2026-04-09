@@ -1,0 +1,5 @@
+name: docker
+description: Docker and Docker Compose patterns for development and production
+detect:
+  files: ["Dockerfile", "docker-compose.*"]
+roles: [engineer]

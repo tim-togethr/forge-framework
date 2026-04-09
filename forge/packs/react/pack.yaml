@@ -1,0 +1,6 @@
+name: react
+description: React component patterns, hooks, state management, and performance
+detect:
+  deps: ["react"]
+  dirs: ["src/components/"]
+roles: [engineer, designer]

@@ -1,0 +1,6 @@
+name: tailwind
+description: Tailwind CSS utility patterns and configuration
+detect:
+  files: ["tailwind.config.*"]
+  deps: ["tailwindcss"]
+roles: [engineer, designer]

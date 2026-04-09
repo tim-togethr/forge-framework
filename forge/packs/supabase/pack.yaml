@@ -1,0 +1,7 @@
+name: supabase
+description: Supabase database patterns, RLS policies, migrations, and auth
+detect:
+  files: ["supabase/config.toml"]
+  deps: ["@supabase/supabase-js"]
+  dirs: ["supabase/migrations/"]
+roles: [engineer]
