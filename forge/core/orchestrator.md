@@ -19,6 +19,11 @@ Gates are injected by the session-start hook based on the role config. When a `<
 
 ### During Gates (while implementing)
 5. **3-File Rule** — Touched >3 files? STOP. Dispatch agent. No exceptions.
+6. **Skill Check** — Before any action, check if an active pack skill matches. Use it instead of improvising.
+7. **Dev Cycle** — Work through one logical unit at a time: implement → verify → next. No scattershot changes.
+8. **Auto-Triggers** — Specific user phrases MUST dispatch agents, not be handled directly. See trigger table.
+9. **Doubt-Triggered Questions** — When uncertain, ask BEFORE guessing. Show your work. Only ask when you genuinely can't resolve from code/docs.
+10. **Visual Companion** — Complex explanations get diagrams or HTML visuals, not walls of text.
 
 ### Completion Gates (before handoff)
 6. **Completion Checklist** — You MUST NOT say "done" until you have:

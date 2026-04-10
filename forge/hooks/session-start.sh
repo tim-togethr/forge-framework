@@ -93,6 +93,80 @@ if [ -n "$ROLE_FILE" ]; then
     echo "    </gate>"
   fi
 
+  # Skill check gate
+  if grep -q 'skill_check:[[:space:]]*true' "$ROLE_FILE" 2>/dev/null; then
+    echo "    <gate name=\"skill_check\" phase=\"during\" enforced=\"true\">"
+    echo "      HARD RULE: Before performing any action, check if an active pack skill"
+    echo "      matches the task. If a skill exists for what you are about to do, invoke"
+    echo "      it via the Skill tool instead of working from scratch. Active packs are"
+    echo "      listed in <active-packs> above. Check their skills before improvising."
+    echo "      Example: if writing a Dockerfile and the docker pack is active, use its"
+    echo "      dockerfile-patterns skill. If writing React hooks and the react pack is"
+    echo "      active, use its hooks skill."
+    echo "    </gate>"
+  fi
+
+  # Dev cycle gate
+  if grep -q 'dev_cycle:[[:space:]]*true' "$ROLE_FILE" 2>/dev/null; then
+    echo "    <gate name=\"dev_cycle\" phase=\"during\" enforced=\"true\">"
+    echo "      HARD RULE: For multi-step implementation work, follow a structured"
+    echo "      development cycle. Do not jump between unrelated changes. Work through"
+    echo "      one logical unit at a time: implement → verify → move to next."
+    echo "      If a dev-cycle skill or command is available, use it to orchestrate."
+    echo "    </gate>"
+  fi
+
+  # Auto-triggers gate
+  if grep -q 'auto_triggers:[[:space:]]*true' "$ROLE_FILE" 2>/dev/null; then
+    echo "    <gate name=\"auto_triggers\" phase=\"during\" enforced=\"true\">"
+    echo "      HARD RULE: The following user phrases MUST trigger specific actions."
+    echo "      Do NOT handle these yourself — dispatch the appropriate agent or skill."
+    echo ""
+    echo "      | User phrase                                    | Required action                |"
+    echo "      |------------------------------------------------|--------------------------------|"
+    echo "      | 'fix issues', 'fix remaining', 'address findings' | Dispatch specialist agent  |"
+    echo "      | 'find where', 'search for', 'locate'           | Dispatch explore agent         |"
+    echo "      | 'visualize', 'diagram', 'draw'                 | Invoke visual/diagram skill    |"
+    echo "      | 'plan', 'design', 'architect'                  | Invoke brainstorm skill        |"
+    echo "      | 'review', 'check my code'                      | Dispatch reviewer agent        |"
+    echo ""
+    echo "      If you catch yourself doing these tasks directly instead of dispatching,"
+    echo "      STOP and dispatch."
+    echo "    </gate>"
+  fi
+
+  # Doubt-triggered questions gate
+  if grep -q 'doubt_triggered_questions:[[:space:]]*true' "$ROLE_FILE" 2>/dev/null; then
+    echo "    <gate name=\"doubt_triggered_questions\" phase=\"during\" enforced=\"true\">"
+    echo "      HARD RULE: When you are uncertain about the right approach, do NOT guess."
+    echo "      Ask the user BEFORE proceeding. But only ask when ALL of these are true:"
+    echo "      - You cannot resolve from CLAUDE.md, repo conventions, or codebase patterns"
+    echo "      - Multiple approaches are genuinely viable"
+    echo "      - The choice significantly impacts correctness"
+    echo "      - Getting it wrong wastes substantial effort"
+    echo ""
+    echo "      When asking, show your work:"
+    echo "      GOOD: 'Found PostgreSQL in docker-compose but MongoDB in docs."
+    echo "             This feature needs time-series. Which should I extend?'"
+    echo "      BAD:  'Which database should I use?'"
+    echo ""
+    echo "      If proceeding without asking: state your assumption, explain why,"
+    echo "      and note what would change it."
+    echo "    </gate>"
+  fi
+
+  # Visual companion gate
+  if grep -q 'visual_companion:[[:space:]]*true' "$ROLE_FILE" 2>/dev/null; then
+    echo "    <gate name=\"visual_companion\" phase=\"during\" enforced=\"true\">"
+    echo "      HARD RULE: When explaining complex systems, architecture, data flows,"
+    echo "      or multi-step processes, use visual aids — not walls of text."
+    echo "      - For architecture or flows: generate a Mermaid diagram"
+    echo "      - For comparisons or data: use an HTML table or visual-explainer"
+    echo "      - For complex ASCII tables (4+ rows, 3+ columns): use styled HTML instead"
+    echo "      If a diagram/visual skill is available, use it."
+    echo "    </gate>"
+  fi
+
   # ===== COMPLETION GATES (before handoff) =====
   # These gates define what you MUST do before telling the user the work is done.
   # The user is NOT your tester. You must verify your own work.
