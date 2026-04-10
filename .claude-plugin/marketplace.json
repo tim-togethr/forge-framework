@@ -9,7 +9,7 @@
       "name": "forge",
       "source": "./forge",
       "description": "Unified skills & agent framework — 12 domain packs, 21 skills, 3 agents, progressive disclosure, auto-detection, self-eval",
-      "version": "0.1.0",
+      "version": "0.4.1",
       "repository": "https://github.com/tim-togethr/forge-framework",
       "license": "MIT",
       "keywords": [

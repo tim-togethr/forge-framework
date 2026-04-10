@@ -39,8 +39,14 @@ LOCAL=$(git rev-parse HEAD)
 REMOTE=$(git rev-parse origin/main)
 ```
 
+Read the current version from `plugin.json` inside the plugin directory:
+
+```bash
+VERSION=$(grep '"version"' <plugin-directory>/.claude-plugin/plugin.json | sed 's/.*"version": *"//;s/".*//')
+```
+
 If `--check` flag was passed:
-- If `LOCAL == REMOTE`: Report "Forge is up to date (v{version})"
+- If `LOCAL == REMOTE`: Report "Forge is up to date (v{VERSION})"
 - If `LOCAL != REMOTE`: Report "Update available" and show commit summary
 
 If `--check` was NOT passed, continue to Step 3.
