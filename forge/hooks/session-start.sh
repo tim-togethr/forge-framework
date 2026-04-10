@@ -167,6 +167,34 @@ if [ -n "$ROLE_FILE" ]; then
     echo "    </gate>"
   fi
 
+  # Design system gate
+  if grep -q 'design_system:[[:space:]]*true' "$ROLE_FILE" 2>/dev/null; then
+    echo "    <gate name=\"design_system\" phase=\"during\" enforced=\"true\">"
+    echo "      HARD RULE: All UI work MUST follow the project's design system."
+    echo "      Before creating or modifying components, check for:"
+    echo "      - Existing design tokens (colors, spacing, typography)"
+    echo "      - Component library patterns already in use"
+    echo "      - Naming conventions for CSS classes, variants, and props"
+    echo "      Do NOT invent new colors, spacing values, or component patterns"
+    echo "      when the design system already provides them. If the design system"
+    echo "      is missing something, flag it — do not silently deviate."
+    echo "    </gate>"
+  fi
+
+  # Accessibility gates
+  if grep -q 'accessibility_gates:[[:space:]]*true' "$ROLE_FILE" 2>/dev/null; then
+    echo "    <gate name=\"accessibility_gates\" phase=\"during\" enforced=\"true\">"
+    echo "      HARD RULE: All UI output MUST meet WCAG 2.1 AA standards."
+    echo "      - Every interactive element needs keyboard access and visible focus"
+    echo "      - Every image needs alt text; decorative images need alt=\"\""
+    echo "      - Color contrast ratios: 4.5:1 for normal text, 3:1 for large text"
+    echo "      - Form inputs need associated labels (not just placeholders)"
+    echo "      - Use semantic HTML (nav, main, article, button) not div soup"
+    echo "      - ARIA attributes only when semantic HTML is insufficient"
+    echo "      If an accessibility audit skill is available, run it before handoff."
+    echo "    </gate>"
+  fi
+
   # ===== COMPLETION GATES (before handoff) =====
   # These gates define what you MUST do before telling the user the work is done.
   # The user is NOT your tester. You must verify your own work.
