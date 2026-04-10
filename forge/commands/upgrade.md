@@ -27,29 +27,19 @@ If none found, report error and suggest reinstalling.
 
 ### Step 2: Check for Updates
 
-```bash
-cd <plugin-directory>
-git fetch origin main 2>/dev/null
-```
-
-Compare local HEAD with origin/main:
+Run this EXACT command (do not omit the VERSION line):
 
 ```bash
-LOCAL=$(git rev-parse HEAD)
-REMOTE=$(git rev-parse origin/main)
+cd <plugin-directory> && LOCAL=$(git rev-parse HEAD) && git fetch origin main 2>&1 && REMOTE=$(git rev-parse origin/main) && VERSION=$(grep '"version"' .claude-plugin/plugin.json | sed 's/.*"version": *"//;s/".*//') && if [ "$LOCAL" = "$REMOTE" ]; then echo "UP_TO_DATE|$LOCAL|v$VERSION"; else echo "UPDATE_AVAILABLE|$LOCAL|$REMOTE|v$VERSION"; fi
 ```
 
-Read the current version from `plugin.json` inside the plugin directory:
+Parse the output:
+- `UP_TO_DATE|<hash>|v<version>` → Report "Forge is up to date" using the version FROM THE OUTPUT (do NOT guess or hardcode a version)
+- `UPDATE_AVAILABLE|<local>|<remote>|v<version>` → Report "Update available"
 
-```bash
-VERSION=$(grep '"version"' <plugin-directory>/.claude-plugin/plugin.json | sed 's/.*"version": *"//;s/".*//')
-```
+IMPORTANT: The version number MUST come from the command output, not from memory or prior context.
 
-If `--check` flag was passed:
-- If `LOCAL == REMOTE`: Report "Forge is up to date (v{VERSION})"
-- If `LOCAL != REMOTE`: Report "Update available" and show commit summary
-
-If `--check` was NOT passed, continue to Step 3.
+If `--check` flag was passed, stop here. Otherwise continue to Step 3.
 
 ### Step 3: Pull Latest
 
