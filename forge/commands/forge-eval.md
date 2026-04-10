@@ -1,7 +1,5 @@
 ---
-name: forge:eval
-description: Run skill quality evaluation — scores skills, produces report, recommends actions
-argument-hint: ""
+description: "Run skill quality evaluation — scores skills, produces report, recommends actions"
 ---
 
 # /forge eval

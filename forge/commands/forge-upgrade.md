@@ -1,7 +1,5 @@
 ---
-name: forge:upgrade
-description: Pull the latest Forge plugin version and report what changed
-argument-hint: "[--check]"
+description: "Pull the latest Forge plugin version and report what changed"
 ---
 
 # /forge upgrade

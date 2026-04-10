@@ -1,7 +1,5 @@
 ---
-name: forge:role
-description: Set your role for gate enforcement (engineer, pm, designer, agent)
-argument-hint: "<role>"
+description: "Set your role for gate enforcement (engineer, pm, designer, agent)"
 ---
 
 # /forge role

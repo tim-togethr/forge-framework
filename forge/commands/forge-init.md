@@ -1,7 +1,5 @@
 ---
-name: forge:init
-description: Bootstrap .forge/ directory in an existing repo with team knowledge, role configs, and auto-detected packs
-argument-hint: "[--template <name>]"
+description: "Bootstrap .forge/ directory in an existing repo with team knowledge, role configs, and auto-detected packs"
 ---
 
 # /forge init
