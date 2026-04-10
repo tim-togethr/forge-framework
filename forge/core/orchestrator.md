@@ -7,12 +7,21 @@ description: |
 
 # Forge Orchestrator
 
-## Hard Gates
+## Hard Gates (Enforced via `<gate-enforcement>` in session context)
 
-1. **3-File Rule** — Touched >3 files? STOP. Dispatch agent. No exceptions.
-2. **Skill Check** — Before any action, check if an active pack skill matches. If yes, invoke it.
-3. **Role Gates** — Load `.forge/roles/{role}.yaml`. Enforce only gates assigned to this role.
+Gates are injected by the session-start hook based on the role config. When a `<gate>` tag is present in your session context with `enforced="true"`, you MUST obey it. These are not suggestions.
+
+1. **Brainstorming Gate** — For new features/projects, complete the full brainstorming flow (explore → ask → propose → sign-off → plan) BEFORE writing any implementation code. Use `planning:brainstorming` skill.
+2. **3-File Rule** — Touched >3 files? STOP. Dispatch agent. No exceptions.
+3. **Skill Check** — Before any action, check if an active pack skill matches. If yes, invoke it.
 4. **Knowledge First** — Before making assumptions about conventions, patterns, or past decisions, check `.forge/knowledge/INDEX.md`.
+5. **Build Verification** — Run the project build before declaring done.
+6. **Code Review** — Request review after significant implementation.
+7. **Pre-Dev Planning** — For 2+ day features, complete research/PRD/TRD first.
+
+### How enforcement works
+
+The session-start hook reads `roles/{role}.yaml` and for each gate set to `true`, injects a `<gate name="..." enforced="true">` block into the session context. These blocks contain HARD RULE instructions that override default behavior. If no `<gate-enforcement>` block is present, gates are not active for this session.
 
 ## Auto-Triggers
 

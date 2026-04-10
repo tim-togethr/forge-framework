@@ -33,10 +33,79 @@ if [ -f "$FORGE_DIR/knowledge/INDEX.md" ]; then
 fi
 
 # Load role config if it exists
+ROLE_FILE=""
 if [ -f "$FORGE_DIR/roles/$ROLE.yaml" ]; then
+  ROLE_FILE="$FORGE_DIR/roles/$ROLE.yaml"
+elif [ -f "$PLUGIN_ROOT/templates/roles/$ROLE.yaml" ]; then
+  ROLE_FILE="$PLUGIN_ROOT/templates/roles/$ROLE.yaml"
+fi
+
+if [ -n "$ROLE_FILE" ]; then
   echo "  <role-config>"
-  cat "$FORGE_DIR/roles/$ROLE.yaml"
+  cat "$ROLE_FILE"
   echo "  </role-config>"
+
+  # --- Enforce gates as hard instructions ---
+  echo "  <gate-enforcement>"
+
+  # Brainstorming gate
+  if grep -q 'brainstorming:[[:space:]]*true' "$ROLE_FILE" 2>/dev/null; then
+    echo "    <gate name=\"brainstorming\" enforced=\"true\">"
+    echo "      HARD RULE: Before creating ANY new files (Write tool) or making significant"
+    echo "      code changes for a NEW feature or project, you MUST complete a brainstorming"
+    echo "      phase first. This means:"
+    echo "      1. Explore existing code/context silently"
+    echo "      2. Ask clarifying questions ONE AT A TIME"
+    echo "      3. Propose 2-3 approaches with tradeoffs"
+    echo "      4. Get explicit user sign-off on an approach"
+    echo "      5. Write a brief plan document"
+    echo "      Only AFTER step 5 may you begin writing implementation code."
+    echo "      Skip conditions: bug fixes, small changes (<1 hour), clear requirements with existing plan."
+    echo "      Use skill: planning:brainstorming"
+    echo "    </gate>"
+  fi
+
+  # Three-file rule gate
+  if grep -q 'three_file_rule:[[:space:]]*true' "$ROLE_FILE" 2>/dev/null; then
+    echo "    <gate name=\"three_file_rule\" enforced=\"true\">"
+    echo "      HARD RULE: Do NOT directly read or edit more than 3 files."
+    echo "      If the task requires touching >3 files, STOP and dispatch a specialist agent."
+    echo "    </gate>"
+  fi
+
+  # Build verification gate
+  if grep -q 'build_verification:[[:space:]]*true' "$ROLE_FILE" 2>/dev/null; then
+    echo "    <gate name=\"build_verification\" enforced=\"true\">"
+    echo "      HARD RULE: Before declaring any task complete, run the project build command"
+    echo "      and verify it succeeds. Do not rely on type-checking alone."
+    echo "    </gate>"
+  fi
+
+  # Code review gate
+  if grep -q 'code_review:[[:space:]]*true' "$ROLE_FILE" 2>/dev/null; then
+    echo "    <gate name=\"code_review\" enforced=\"true\">"
+    echo "      HARD RULE: After significant implementation work, request code review"
+    echo "      before declaring complete. Use the reviewer agent."
+    echo "    </gate>"
+  fi
+
+  # Pre-dev planning gate
+  if grep -q 'pre_dev_planning:[[:space:]]*true' "$ROLE_FILE" 2>/dev/null; then
+    echo "    <gate name=\"pre_dev_planning\" enforced=\"true\">"
+    echo "      HARD RULE: For features estimated at 2+ days, complete pre-dev planning"
+    echo "      (research, PRD, TRD) before implementation. Use planning pack skills."
+    echo "    </gate>"
+  fi
+
+  # Knowledge gate
+  if grep -q 'knowledge_gate:[[:space:]]*true' "$ROLE_FILE" 2>/dev/null; then
+    echo "    <gate name=\"knowledge_gate\" enforced=\"true\">"
+    echo "      HARD RULE: Before making assumptions about conventions, patterns, or past"
+    echo "      decisions, check .forge/knowledge/INDEX.md first."
+    echo "    </gate>"
+  fi
+
+  echo "  </gate-enforcement>"
 fi
 
 # Suggest init if no .forge/ directory
