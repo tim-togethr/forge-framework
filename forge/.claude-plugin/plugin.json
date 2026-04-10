@@ -2,7 +2,7 @@
   "name": "forge",
   "displayName": "Forge",
   "description": "Unified skills & agent framework for Claude Code. Progressive disclosure, shared team knowledge, auto-detected domain packs, self-improvement loop.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "tim-togethr"
   },
