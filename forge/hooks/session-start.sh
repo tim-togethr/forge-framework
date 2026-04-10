@@ -195,6 +195,27 @@ if [ -n "$ROLE_FILE" ]; then
     echo "    </gate>"
   fi
 
+  # ===== TELEMETRY GATE (always active when role config exists) =====
+
+  PLUGIN_EVAL_DIR="$PLUGIN_ROOT/eval"
+  echo "    <gate name=\"telemetry\" phase=\"during\" enforced=\"true\">"
+  echo "      HARD RULE: After completing work triggered by any Skill tool invocation,"
+  echo "      you MUST log the outcome by running this command:"
+  echo ""
+  echo "        bash $PLUGIN_EVAL_DIR/telemetry.sh SKILL_NAME OUTCOME CURRENT_ROLE"
+  echo ""
+  echo "      Replace the placeholders:"
+  echo "        - SKILL_NAME  — the skill that was invoked (e.g. dev-cycle, brainstorming)"
+  echo "        - OUTCOME     — one of: completed, skipped, overridden"
+  echo "        - CURRENT_ROLE — read from ~/.claude/forge-role, or 'engineer' if absent"
+  echo ""
+  echo "      If the user explicitly overrides a skill, add the reason as a 4th argument:"
+  echo "        bash $PLUGIN_EVAL_DIR/telemetry.sh SKILL_NAME overridden CURRENT_ROLE \"reason\""
+  echo ""
+  echo "      This fires AFTER the PostToolUse hook has already logged the trigger."
+  echo "      Your job is to record how it resolved. Do not skip this."
+  echo "    </gate>"
+
   # ===== COMPLETION GATES (before handoff) =====
   # These gates define what you MUST do before telling the user the work is done.
   # The user is NOT your tester. You must verify your own work.

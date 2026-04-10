@@ -13,6 +13,15 @@ OVERRIDE_REASON="${4:-}"
 DATE=$(date -u +"%Y-%m-%d")
 SESSION="${CLAUDE_SESSION_ID:-$(date +%s)}"
 
+# Sanitize enum-like fields: strip to safe characters only
+SKILL=$(printf '%s' "$SKILL" | tr -cd 'a-zA-Z0-9_.:/-')
+OUTCOME=$(printf '%s' "$OUTCOME" | tr -cd 'a-zA-Z0-9_.:/-')
+ROLE=$(printf '%s' "$ROLE" | tr -cd 'a-zA-Z0-9_.:/-')
+SESSION=$(printf '%s' "$SESSION" | tr -cd 'a-zA-Z0-9_.:/-')
+
+# Sanitize freeform text: escape backslashes first, then double quotes
+OVERRIDE_REASON=$(printf '%s' "$OVERRIDE_REASON" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g')
+
 mkdir -p "$(dirname "$USAGE_FILE")"
 
 if [ -n "$OVERRIDE_REASON" ]; then
