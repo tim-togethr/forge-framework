@@ -218,6 +218,22 @@ if [ -n "$ROLE_FILE" ]; then
   echo "      Your job is to record how it resolved. Do not skip this."
   echo "    </gate>"
 
+  # ===== FORGE COMMAND OVERRIDES (always active) =====
+
+  echo "    <gate name=\"forge_commands\" phase=\"during\" enforced=\"true\">"
+  echo "      HARD RULE: When /forge upgrade or /forge:upgrade is invoked, you MUST"
+  echo "      run ONLY this exact command and display the output:"
+  echo ""
+  echo "        bash \"$PLUGIN_ROOT/scripts/upgrade.sh\""
+  echo ""
+  echo "      For --check mode:"
+  echo ""
+  echo "        bash \"$PLUGIN_ROOT/scripts/upgrade.sh\" --check"
+  echo ""
+  echo "      Do NOT improvise discovery. Do NOT run git commands. Do NOT check paths."
+  echo "      Do NOT read package.json. Run the SINGLE command above. Nothing else."
+  echo "    </gate>"
+
   # ===== COMPLETION GATES (before handoff) =====
   # These gates define what you MUST do before telling the user the work is done.
   # The user is NOT your tester. You must verify your own work.
