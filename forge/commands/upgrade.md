@@ -4,30 +4,23 @@ description: "Pull the latest Forge plugin version and report what changed"
 
 # /forge upgrade
 
-Pull the latest version of the Forge plugin from the upstream repository.
+Your session context contains `<plugin-dir>` with the exact Forge plugin path.
+Run this command using that path. Do NOT modify, split, or improvise.
 
-## Execution
-
-The upgrade script is at `scripts/upgrade.sh` relative to the Forge plugin root
-(one directory up from this command file: `../scripts/upgrade.sh`).
-
-Run the script and display its output exactly as printed. Do not reformat,
-add commentary, or run additional commands.
+**Upgrade:**
 
 ```bash
-# Upgrade (fetch + pull + changelog):
-bash "<FORGE_PLUGIN_DIR>/scripts/upgrade.sh"
-
-# Check only (no pull):
-bash "<FORGE_PLUGIN_DIR>/scripts/upgrade.sh" --check
+bash "<plugin-dir>/scripts/upgrade.sh"
 ```
 
-To resolve `<FORGE_PLUGIN_DIR>`, use the path this command file was loaded from
-minus `/commands/upgrade.md`. For example, if you read this file from
-`/Users/x/forge-framework/forge/commands/upgrade.md`, the script is at
-`/Users/x/forge-framework/forge/scripts/upgrade.sh`.
+**Check only (no pull):**
 
-IMPORTANT: The script handles ALL logic — discovery, version reading, git
-operations, and output formatting. Run ONLY the script. Do NOT run your own
-git commands, do NOT improvise discovery, do NOT parse package.json or any
-other file. One bash call, one script, done.
+```bash
+bash "<plugin-dir>/scripts/upgrade.sh" --check
+```
+
+Replace `<plugin-dir>` with the literal value from your `<forge-session>` context
+(e.g. if it says `<plugin-dir>/Users/x/forge/</plugin-dir>`, run
+`bash "/Users/x/forge/scripts/upgrade.sh"`).
+
+Display the script output exactly as printed. Do NOT run any other commands.

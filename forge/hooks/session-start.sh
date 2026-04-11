@@ -24,6 +24,7 @@ fi
 echo "<forge-session>"
 echo "  <active-packs>$PACKS_JSON</active-packs>"
 echo "  <role>$ROLE</role>"
+echo "  <plugin-dir>$PLUGIN_ROOT</plugin-dir>"
 
 # Load knowledge index if it exists
 if [ -f "$FORGE_DIR/knowledge/INDEX.md" ]; then
