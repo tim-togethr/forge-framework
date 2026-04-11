@@ -1,2 +1,5 @@
 # Forge session telemetry
 .forge/eval/usage.jsonl
+
+# Visual companion output
+.forge/visual/

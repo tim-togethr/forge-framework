@@ -68,6 +68,8 @@ Present distinct approaches with explicit tradeoffs. Don't pick a winner yet.
 **My recommendation**: B — because [specific reason tied to their constraints].
 ```
 
+**Visual companion:** For questions where visual presentation helps (UI layouts, architecture diagrams, side-by-side comparisons), use the visual companion to show proposals in the browser. See `visual-companion.md` for when and how. Terminal text is still the default for conceptual choices.
+
 ### Phase 4: Present Design
 
 Once an approach is chosen, present the full design:
