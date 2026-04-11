@@ -15,52 +15,38 @@ Pull the latest version of the Forge plugin from the upstream repository.
 
 ## What It Does
 
-### Step 1: Locate the Plugin
+### Step 1: Locate Plugin and Check for Updates
 
-Find the Forge plugin installation directory. Check these locations in order:
-
-1. `$CLAUDE_PLUGIN_ROOT` environment variable (set by Claude Code when running as a plugin)
-2. `~/.claude/plugins/forge/` (standard plugin install path)
-3. `/Users/timcollins/forge-framework/forge/` (development install)
-
-If none found, report error and suggest reinstalling.
-
-### Step 2: Check for Updates
-
-Run this EXACT command (do not omit the VERSION line):
+Run this EXACT command as a single Bash tool call. Do NOT break it up, improvise discovery, or run extra commands.
 
 ```bash
-cd <plugin-directory> && LOCAL=$(git rev-parse HEAD) && git fetch origin main 2>&1 && REMOTE=$(git rev-parse origin/main) && VERSION=$(grep '"version"' .claude-plugin/plugin.json | sed 's/.*"version": *"//;s/".*//') && if [ "$LOCAL" = "$REMOTE" ]; then echo "UP_TO_DATE|$LOCAL|v$VERSION"; else echo "UPDATE_AVAILABLE|$LOCAL|$REMOTE|v$VERSION"; fi
+PLUGIN_DIR=""; for dir in "${CLAUDE_PLUGIN_ROOT:-}" "$HOME/.claude/plugins/forge" "/Users/timcollins/forge-framework/forge"; do [ -n "$dir" ] && [ -d "$dir/.claude-plugin" ] && PLUGIN_DIR="$dir" && break; done; if [ -z "$PLUGIN_DIR" ]; then echo "NOT_FOUND"; exit 0; fi; GIT_ROOT=$(git -C "$PLUGIN_DIR" rev-parse --show-toplevel 2>/dev/null); if [ -z "$GIT_ROOT" ]; then echo "NOT_GIT"; exit 0; fi; cd "$GIT_ROOT" && LOCAL=$(git rev-parse HEAD) && git fetch origin main 2>&1 && REMOTE=$(git rev-parse origin/main) && VERSION=$(grep '"version"' "$PLUGIN_DIR/.claude-plugin/plugin.json" | sed 's/.*"version": *"//;s/".*//') && if [ "$LOCAL" = "$REMOTE" ]; then echo "UP_TO_DATE|$LOCAL|v$VERSION"; else echo "UPDATE_AVAILABLE|$LOCAL|$REMOTE|v$VERSION"; fi
 ```
 
 Parse the output:
-- `UP_TO_DATE|<hash>|v<version>` → Report "Forge is up to date" using the version FROM THE OUTPUT (do NOT guess or hardcode a version)
-- `UPDATE_AVAILABLE|<local>|<remote>|v<version>` → Report "Update available"
+- `NOT_FOUND` → Plugin not installed. Suggest reinstalling.
+- `NOT_GIT` → Plugin directory exists but is not inside a git repo. Suggest reinstalling.
+- `UP_TO_DATE|<hash>|v<version>` → Report "Forge is up to date" with version and short hash FROM THE OUTPUT
+- `UPDATE_AVAILABLE|<local>|<remote>|v<version>` → Report "Update available" and continue to Step 2
 
 IMPORTANT: The version number MUST come from the command output, not from memory or prior context.
 
-If `--check` flag was passed, stop here. Otherwise continue to Step 3.
+If `--check` flag was passed, stop here. Otherwise continue to Step 2.
 
-### Step 3: Pull Latest
+### Step 2: Pull Latest
+
+Using the same `GIT_ROOT` from Step 1, run:
 
 ```bash
-git pull origin main --ff-only
+cd <GIT_ROOT> && LOCAL=$(git rev-parse HEAD) && git pull origin main --ff-only && REMOTE=$(git rev-parse HEAD) && git log --oneline $LOCAL..$REMOTE
 ```
 
 If fast-forward fails (local changes exist):
 - Report the conflict
-- Suggest: `cd <plugin-dir> && git stash && git pull origin main --ff-only && git stash pop`
+- Suggest: `cd <GIT_ROOT> && git stash && git pull origin main --ff-only && git stash pop`
 - Do NOT force-pull or discard changes
 
-### Step 4: Show Changelog
-
-After pulling, show what changed:
-
-```bash
-git log $LOCAL..$REMOTE --oneline
-```
-
-Format as:
+Format the result as:
 
 ```
 ## Forge upgraded
@@ -72,18 +58,12 @@ Format as:
 - fix: enforce gates via session-start hook injection
 - feat: add new pack for X
 
-Restart your Claude Code session to pick up the changes.
+Run `/clear` or start a new session to pick up the changes.
 ```
-
-### Step 5: Suggest Session Restart
-
-Gate enforcement and hook changes only take effect on session start. Remind the user:
-
-> "Changes are pulled. Run `/clear` or start a new session to activate them."
 
 ## Checklist
 
-- [ ] Plugin directory found
+- [ ] Plugin directory found via single discovery command
 - [ ] Git fetch succeeded (network available)
 - [ ] Pull was fast-forward (no local modifications lost)
 - [ ] Changelog displayed
